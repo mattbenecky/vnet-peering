@@ -1,6 +1,6 @@
-# Virtual Network Peering
+# Connect Virtual Networks with VNet Peering
 
-This provides a sample virtual network peering to connect two or more virtual networks in Azure. The traffic that passes between peered virtual networks is routed directly through the Microsoft backbone infrastructure, not through a gateway or over the public internet.
+This provides a sample virtual network peering to connect virtual networks in Azure. The traffic that passes between peered virtual networks is routed directly through the Microsoft backbone infrastructure, not through a gateway or over the public internet.
 
 - A low-latency, high-bandwidth connection between resources in different virtual networks
 - The ability for resources in one virtual network to communicate with resources in a different virtual network
