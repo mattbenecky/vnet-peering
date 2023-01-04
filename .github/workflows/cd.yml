@@ -1,0 +1,53 @@
+name: 'Deploy VNet Peering'
+
+on:
+
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name: '
+        required: true
+        default: 'demo'
+      location:
+        description: 'Location: '
+        required: true
+        default: 'eastus'
+
+permissions:
+  # Required permission to request OIDC JWT ID token from GitHub's OIDC provider
+  contents: read
+  # Required permission to perform GitHub Action actions/checkout
+  id-token: write
+
+jobs:
+
+  deploy:
+    environment: Dev
+    name: 'Deploy VNet Peering to Azure'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+      
+      # Authenticate with Azure via OIDC Federated Credential
+      - name: 'Azure Authentication via OIDC'
+        uses: Azure/login@v1
+        with:
+          allow-no-subscriptions: true
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      # Deploy Infrastructure-as-Code Bicep template
+      - name: 'Create Deployment with Azure CLI'
+        uses: azure/CLI@v1
+        with:
+          # Create subscription scope deployment using Azure CLI within context of federated credential authorization
+          inlineScript: |
+            az deployment sub create \
+              --location ${{ inputs.location }} \
+              --name '${{ inputs.name }}-'$(date +"%Y%m%d%H%M%S") \
+              --template-file 'src/infra/main.bicep' \
+              --parameters name=${{ inputs.name }} \
+              --parameters 'src/infra/parameters/main.parameters.json' 
