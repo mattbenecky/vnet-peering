@@ -1,0 +1,85 @@
+# Pre-Flight Validation workflow validates IaC pre-deployment for continuous integration
+name: 'Pre-Flight Validation'
+
+on:
+
+  # Automatically trigger workflow when called
+  workflow_call:
+    inputs:
+      name:
+        description: 'Name: '
+        required: false
+        default: 'demo'
+        type: string
+      location:
+        description: 'Location: '
+        required: false
+        default: 'eastus'
+        type: string
+  
+  # Manually trigger workflow 
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name: '
+        required: true
+        default: 'demo'
+      location:
+        description: 'Location: '
+        required: true
+        default: 'eastus'
+
+permissions:
+  # Required permission to request OIDC JWT ID token from GitHub's OIDC provider
+  id-token: write
+  # Required permission to perform GitHub Action actions/checkout
+  contents: read
+
+
+jobs:
+
+  pre-flight-validation:
+    environment: Dev
+    name: 'Pre-Flight Validation'
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v3
+
+      # Authenticate with Azure
+      - name: 'Azure Authentication via OIDC'
+        uses: Azure/login@v1
+        with:
+          # Authorization via OIDC Federated Credential role-based access control
+          allow-no-subscriptions: true
+          client-id: ${{ secrets.CI_CLIENT_ID }}
+          tenant-id: ${{ secrets.CI_TENANT_ID }}
+          subscription-id: ${{ secrets.CI_SUBSCRIPTION_ID }}
+
+      # Validate whether the Bicep template is valid at the specified scope
+      - name: 'Scope Validation with Azure CLI'
+        uses: azure/CLI@v1
+        with:
+          # Execute scope validation using Azure CLI within context of Continuous Integration Principal authorization
+          inlineScript: |
+            az deployment sub validate \
+              --location ${{ inputs.location }} \
+              --name '${{ inputs.name }}-deployment-'$(date +"%Y%m%d-%Hh%Mm%Ss") \
+              --template-file 'src/infra/main.bicep' \
+              --parameters name=${{ inputs.name }} \
+              --parameters 'src/infra/parameters/main.parameters.json'
+              
+      # Validate whether the Bicep template will be accepted by Azure Resource Manager and preview resource changes
+      - name: 'Pre-flight Validation with Azure CLI'
+        uses: azure/CLI@v1
+        with:
+          # Execute what-if operation using Azure CLI within context of Continuous Integration Principal authorization
+          inlineScript: |
+            az deployment sub what-if \
+              --location ${{ inputs.location }} \
+              --name '${{ inputs.name }}-deployment-'$(date +"%Y%m%d-%Hh%Mm%Ss") \
+              --template-file 'src/infra/main.bicep' \
+              --parameters name=${{ inputs.name }} \
+              --parameters 'src/infra/parameters/main.parameters.json'
