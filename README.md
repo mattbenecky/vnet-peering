@@ -29,3 +29,21 @@ curl -LJO https://raw.githubusercontent.com/mattbenecky/vnet-peering/main/src/in
 ```SUBSCRIPTION_ID```
 
 ![Environment](docs/images/environment.png)
+
+## Deploy Virtual Network Peering
+
+1. Run GitHub Actions workflow ```Deploy VNet Peering```
+
+![Peering](docs/images/hub.png)
+
+![Peering](docs/images/spoke.png)
+
+## Cleaning Up
+
+1. Launch [Cloud Shell](https://shell.azure.com/bash). (Open Link in New Tab)
+
+```COPY``` the following line 👇
+```
+curl -LJO https://raw.githubusercontent.com/mattbenecky/vnet-peering/main/src/infra/cleanup.sh && chmod +x cleanup.sh && ./cleanup.sh
+```
+```PASTE``` in [Cloud Shell](https://shell.azure.com/bash) & press ```ENTER```
