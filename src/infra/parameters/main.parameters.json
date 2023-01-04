@@ -1,0 +1,67 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "value": "Dev"
+    },
+    "vnetHubAddressSpace": {
+      "value": {
+        "addressPrefixes": [
+          "10.0.0.0/16"
+        ]
+      }                  
+    },
+    "vnetSpokeAddressSpace": {
+      "value": {
+        "addressPrefixes": [
+          "10.1.0.0/16"
+        ]
+      }                  
+    },
+    "vnetHubSubnets": {
+      "value": [
+        {
+          "name": "AzureBastionSubnet",
+          "addressPrefix": "10.0.1.0/26",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Disabled"
+        },
+        {
+          "name": "GatewaySubnet",
+          "addressPrefix": "10.0.2.0/27",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Disabled"
+        },
+        {
+          "name": "AzureFirewallSubnet",
+          "addressPrefix": "10.0.3.0/26",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Disabled"
+        }
+      ]                      
+    }, 
+    "vnetSpokeSubnets": {
+      "value": [
+        {
+          "name": "ApiServerSubnet",
+          "addressPrefix": "10.1.0.0/28",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled"
+        },
+        {
+          "name": "PrivateLinkSubnet",
+          "addressPrefix": "10.1.1.0/24",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled"
+        },
+        {
+          "name": "ClusterSubnet",
+          "addressPrefix": "10.1.2.0/24",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled"
+        }
+      ]                      
+    }        
+  }
+}
