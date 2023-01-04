@@ -16,7 +16,7 @@ This provides a sample virtual network peering to connect two or more virtual ne
 
 ```COPY``` the following line 👇
 ```
-curl -LJO https://raw.githubusercontent.com/mattbenecky/vnet/main/src/infra/setup.sh && chmod +x setup.sh && ./setup.sh
+curl -LJO https://raw.githubusercontent.com/mattbenecky/vnet-peering/main/src/infra/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 ```PASTE``` in [Cloud Shell](https://shell.azure.com/bash) & press ```ENTER```
 
