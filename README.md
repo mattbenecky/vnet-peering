@@ -34,6 +34,8 @@ curl -LJO https://raw.githubusercontent.com/mattbenecky/vnet-peering/main/src/in
 
 1. Run GitHub Actions workflow ```Deploy VNet Peering```
 
+![Workflow](docs/images/workflow.png)
+
 ![Peering](docs/images/hub.png)
 
 ![Peering](docs/images/spoke.png)
