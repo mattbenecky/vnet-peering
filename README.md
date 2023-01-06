@@ -4,7 +4,7 @@ This provides a sample virtual network peering to enable connectivity between se
 
 - A low-latency, high-bandwidth connection between resources in different virtual networks
 - The ability for resources in one virtual network to communicate with resources in a different virtual network
-- The ability to transfer data between virtual networks across Azure subscriptions, Azure AD tenants, deployment models, and Azure regions
+- The ability to transfer data between virtual networks across Azure subscriptions, Azure AD tenants, and Azure regions
 
 ![Diagram](docs/images/diagram.png)
 
